@@ -1,0 +1,22 @@
+name: ESP32 Firmware OTA Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PlatformIO
+        run: |
+          pip install platformio
+      - name: Build Firmware
+        run: |
+          platformio run
+      - name: Upload Firmware to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: .pio/build/esp32dev/firmware.bin
